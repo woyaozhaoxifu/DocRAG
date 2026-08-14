@@ -23,7 +23,8 @@ class Embedder:
         self._loading = False
 
     def _find_local_snapshot(self):
-        """在 cache_dir 里找本地下载好的模型 snapshot 目录。"""
+        """在 cache_dir 里找本地下载好的完整模型 snapshot 目录。"""
+        snapshot_path = None
         try:
             from huggingface_hub import scan_cache_dir
             cache_info = scan_cache_dir(self.cache_dir)
@@ -31,17 +32,29 @@ class Embedder:
                 if repo.repo_id == self.model_name:
                     for rev in repo.revisions:
                         if rev.snapshot_path and os.path.isdir(rev.snapshot_path):
-                            return rev.snapshot_path
+                            snapshot_path = rev.snapshot_path
+                            break
         except Exception:
             pass
-        # fallback: 直接拼路径
-        parts = self.model_name.replace("/", "--").replace("\\", "--")
-        snapshot_base = os.path.join(self.cache_dir, f"models--{parts}", "snapshots")
-        if os.path.isdir(snapshot_base):
-            for name in os.listdir(snapshot_base):
-                p = os.path.join(snapshot_base, name)
-                if os.path.isdir(p):
-                    return p
+        if not snapshot_path:
+            # fallback: 直接拼路径
+            parts = self.model_name.replace("/", "--").replace("\\", "--")
+            snapshot_base = os.path.join(self.cache_dir, f"models--{parts}", "snapshots")
+            if os.path.isdir(snapshot_base):
+                for name in os.listdir(snapshot_base):
+                    p = os.path.join(snapshot_base, name)
+                    if os.path.isdir(p):
+                        snapshot_path = p
+                        break
+        # 必须有关键文件才算"完整"，避免加载损坏缓存
+        if snapshot_path:
+            required = ["config.json", "tokenizer.json"]
+            has_weight = (
+                os.path.exists(os.path.join(snapshot_path, "pytorch_model.bin"))
+                or os.path.exists(os.path.join(snapshot_path, "model.safetensors"))
+            )
+            if has_weight and all(os.path.exists(os.path.join(snapshot_path, f)) for f in required):
+                return snapshot_path
         return None
 
     def load(self):
@@ -54,18 +67,11 @@ class Embedder:
 
             os.makedirs(self.cache_dir, exist_ok=True)
 
-            # 优先离线加载本地缓存，避免每次启动都去连 huggingface.co
+            # 只加载完整本地缓存；没有就不联网，避免 huggingface.co 在国内卡住
             local_path = self._find_local_snapshot()
-            if local_path:
-                self.model = SentenceTransformer(str(local_path), local_files_only=True)
-            else:
-                # 本地没有才联网，并缩短超时/重试，避免卡住
-                os.environ["HF_HUB_DOWNLOAD_TIMEOUT"] = "15"
-                os.environ["HF_HUB_ETAG_TIMEOUT"] = "10"
-                os.environ["HF_HUB_MAX_RETRIES"] = "2"
-                self.model = SentenceTransformer(
-                    self.model_name, cache_folder=self.cache_dir, local_files_only=False
-                )
+            if not local_path:
+                raise RuntimeError("本地语义模型缓存不完整，已跳过语义检索。")
+            self.model = SentenceTransformer(str(local_path), local_files_only=True)
             try:
                 self.dim = self.model.get_embedding_dimension()
             except Exception:
