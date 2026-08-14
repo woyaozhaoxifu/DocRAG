@@ -6,7 +6,7 @@
     "OneDrive": "C:/Users/你的用户名/OneDrive",
     "WPSCloud": "C:/Users/你的用户名/WPS Cloud Files",
     "BaiduPan": "C:/Users/你的用户名/百度网盘",
-    "BaiduDownload": "D:/BaiduNetdiskDownload"
+    "BaiduDownload": "D:/你的百度网盘下载目录"
   },
   "auto_archive": {
     "Desktop": false, "Downloads": false, "Documents": false,

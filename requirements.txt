@@ -1,0 +1,16 @@
+# DocRAG 运行依赖
+pywebview
+pymupdf
+python-docx
+openpyxl
+python-pptx
+jieba
+watchdog
+numpy
+
+# 语义检索（可选，启用向量搜索时需要）
+sentence-transformers
+
+# OCR（可选，启用图片/扫描版 PDF 文字识别时需要）
+# paddleocr
+# paddlepaddle

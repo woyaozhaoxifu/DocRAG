@@ -6,7 +6,7 @@ REM
 REM 注意：OCR（图片/扫描PDF文字识别）依赖 PaddleOCR，体积大（数百MB），
 REM 默认不装。如需开启，去掉下面最后一行注释后保存再运行。
 
-set PIP=C:\Users\llia\.workbuddy\binaries\python\envs\default\Scripts\pip.exe
+set PIP=pip
 
 echo [1/2] 安装 sentence-transformers（语义检索核心）...
 "%PIP%" install --no-cache-dir sentence-transformers
