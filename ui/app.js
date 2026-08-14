@@ -167,8 +167,14 @@ function showPreview(path) {
 function closePreview() { $("preview").classList.add("hidden"); }
 
 function refresh() {
-  if (lastQuery.trim()) doSearch(lastQuery);
-  else api.list_recent(20).then((list) => { lastResults = list; renderResults(list); });
+  if (lastQuery.trim()) {
+    doSearch(lastQuery);
+  } else {
+    // 未搜索（浏览）状态下也要应用"类型/目录"筛选
+    const hasFilter = (!!currentFilter.exts && currentFilter.exts.length) || !!currentFilter.dir;
+    const lim = hasFilter ? 500 : 20;
+    api.list_recent(lim, currentFilter).then((list) => { lastResults = list; renderResults(list); });
+  }
   api.get_stats().then(renderStats);
 }
 

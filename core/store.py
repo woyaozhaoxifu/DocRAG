@@ -412,13 +412,29 @@ class Store:
             "needs_download": bool(ph),
         }
 
-    def recent(self, n=20):
+    def recent(self, n=20, filters=None):
         out = []
+        sql = """SELECT path, ext, size, keywords, archived, archived_path, mtime, dir_name, is_placeholder
+                 FROM docs"""
+        params = []
+        conds = []
+        if filters:
+            if filters.get("exts"):
+                ph = ",".join("?" * len(filters["exts"]))
+                conds.append(f"ext IN ({ph})")
+                params.extend(filters["exts"])
+            elif filters.get("ext"):
+                conds.append("ext = ?")
+                params.append(filters["ext"])
+            if filters.get("dir"):
+                conds.append("dir_name = ?")
+                params.append(filters["dir"])
+        if conds:
+            sql += " WHERE " + " AND ".join(conds)
+        sql += " ORDER BY mtime DESC LIMIT ?"
+        params.append(n)
         with self.lock:
-            cur = self.conn.execute(
-                """SELECT path, ext, size, keywords, archived, archived_path, mtime, dir_name, is_placeholder
-                   FROM docs ORDER BY mtime DESC LIMIT ?""", (n,)
-            )
+            cur = self.conn.execute(sql, params)
             for row in cur:
                 path, ext, size, keywords, archived, archived_path, mtime, dir_name, ph = row
                 out.append({

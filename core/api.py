@@ -26,8 +26,8 @@ class Api:
     def get_stats(self):
         return self.mgr.store.stats()
 
-    def list_recent(self, n=20):
-        return self.mgr.store.recent(int(n or 20))
+    def list_recent(self, n=20, filters=None):
+        return self.mgr.store.recent(int(n or 20), filters=filters)
 
     # ---- 文件操作 ----
     def open_file(self, path):
