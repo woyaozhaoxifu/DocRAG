@@ -2,7 +2,7 @@
 
 纯本地、不上传任何文档的桌面文档检索工具。自动索引你电脑里的文档，输入关键词/文件名即可搜到并一键打开，支持中文分词、关键词检索、语义检索（可选）、图片 OCR（可选）、按类型/目录筛选、自动补全、正文预览、安全归档与还原。
 
-> 全程本地运行，文档不出电脑。
+> 全程本地运行，文档不出电脑。本仓库**仅包含搜索引擎代码**，不含任何个人文档、模型权重、本机路径或专有名词配置。
 
 ## 功能
 
@@ -14,25 +14,51 @@
 - **自动补全 / 热词**：输入时下拉提示已索引关键词
 - **筛选**：按类型（PDF/Word/Excel/PPT/文本/图片）或目录过滤
 - **正文预览**：点卡片标题弹窗查看文档正文（前 8000 字）
-- **安全归档与还原**：手动或按规则把文件移入 `D:\DocRAG\archive`，写可逆清单，一键还原；**绝不删除未校验文件**
+- **安全归档与还原**：手动或按规则把文件移入 `archive/`，写可逆清单，一键还原；**绝不删除未校验文件**
 - **自动监控**：监听目录新增文件，自动增量索引
 - **云盘占位符识别**：OneDrive 等按需文件会被标记「需释放」，打开前拦截提示
 
-## 使用方法
+## 安装与运行
 
-双击 `D:\DocRAG\start.bat` 启动（首次后台扫描监控目录建索引，窗口先弹出）。
+```bash
+# 1. 克隆仓库
+git clone <你的仓库地址>
+cd DocRAG
+
+# 2. 创建并激活虚拟环境（推荐）
+python -m venv venv
+# Windows:
+venv\Scripts\activate
+# macOS / Linux:
+source venv/bin/activate
+
+# 3. 安装依赖
+pip install -r requirements.txt
+
+# 4. 准备个人配置（仓库不含 config.json，需自行创建）
+copy config.example.json config.json        # Windows
+# cp config.example.json config.json        # macOS / Linux
+# 然后编辑 config.json，把 monitored_dirs 改成你自己的目录
+
+# 5. 启动
+python app.py
+# 或直接双击 start.bat（会优先使用 venv 内的 python）
+```
+
+> 首次启动会后台扫描 `monitored_dirs` 建立索引，窗口会立即弹出，索引在后台进行。
 
 ## 目录结构
 
 ```
-D:\DocRAG\
+DocRAG/
 ├── app.py                # 入口：pywebview 原生窗口 + 后台监听/索引服务
-├── start.bat             # 启动脚本
+├── start.bat             # 启动脚本（优先用 venv，否则系统 python）
 ├── install_models.bat    # 一键安装语义检索模型（可选）
-├── user_dict.txt         # 中文专有名词词典（青隼电源、十五五…）
-├── config.json           # 配置（监控目录、归档、忽略规则、语义/OCR/智能归档开关）
+├── config.example.json   # 配置模板（config.json 不入库，请复制改名）
+├── user_dict.example.txt # 专有名词词典模板（user_dict.txt 不入库）
+├── requirements.txt      # 依赖清单
 ├── core\
-│   ├── config.py         # 配置加载
+│   ├── config.py         # 配置加载（默认相对路径，不依赖任何个人目录）
 │   ├── parsers.py        # 文档文本抽取（含 OCR 钩子）
 │   ├── keywords.py       # 关键词 + 同义词扩展
 │   ├── store.py          # SQLite 普通表 + LIKE 子串检索（中文友好）+ 向量语义融合（可选）+ 归档/还原
@@ -41,14 +67,17 @@ D:\DocRAG\
 │   ├── watcher.py        # 文件监听
 │   └── api.py            # 前端接口
 ├── ui\                   # 暗色主题搜索界面
-└── data\                 # 索引库（docs.db）
+├── data\                 # 索引库（docs.db），运行时生成，不入库
+└── archive\              # 归档存放目录，运行时生成，不入库
 ```
 
 ## 配置（config.json）
 
+`config.json` 与 `user_dict.txt` **不会上传到仓库**（见 `.gitignore`），请从 `config.example.json` / `user_dict.example.txt` 复制后自行填写。
+
 | 字段 | 说明 |
 |---|---|
-| `monitored_dirs` | 监控目录（下载/文档/桌面/云盘…）。可改成你的真实路径 |
+| `monitored_dirs` | 监控目录（下载/文档/桌面/云盘…）。改成你自己的真实路径 |
 | `auto_archive` | 各目录是否自动归档新文件。**默认全 false（只索引不移动）** |
 | `exclude_dirs` / `exclude_path_contains` / `exclude_exts` | 忽略规则，避免把微信/游戏/云盘缓存当文档索引 |
 | `user_dict` | 专有名词词典路径，提升分词准确率 |
@@ -68,6 +97,7 @@ D:\DocRAG\
 ## 隐私与安全
 
 - 全部索引与检索在本地完成，文档不上传。
+- 本仓库仅含源代码与通用配置模板，**不含任何个人文档内容、模型权重、本机绝对路径或专有名词**。
 - 归档是「移动 + 写可逆清单」，永不删除未校验文件；点「还原」即可放回原路径。
 - 自动归档默认关闭；如需开启请改 `auto_archive` 对应目录为 `true`。
 
