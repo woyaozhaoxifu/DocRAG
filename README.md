@@ -1,4 +1,6 @@
-# 本地文档智能检索系统（Local RAG）
+# DocRAG · 本地文档智能检索系统（Local Document Intelligent Retrieval）
+
+**English** — DocRAG is a fully local, privacy-first desktop document search engine. It auto-indexes your files so you can find any document by keyword or filename and open it in one click. Supports Chinese word segmentation, keyword search, optional semantic (vector) hybrid search, optional image OCR, type/folder filters, autocomplete, content preview, and safe archive/restore.
 
 纯本地、不上传任何文档的桌面文档检索工具。自动索引你电脑里的文档，输入关键词/文件名即可搜到并一键打开，支持中文分词、关键词检索、语义检索（可选）、图片 OCR（可选）、按类型/目录筛选、自动补全、正文预览、安全归档与还原。
 
