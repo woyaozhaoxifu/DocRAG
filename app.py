@@ -3,6 +3,13 @@ import sys
 import threading
 import traceback
 
+# 强制 stdout/stderr 使用 UTF-8，避免 Windows 控制台(cmd)中文乱码
+try:
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+except Exception:
+    pass
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from core.config import load_config, APP_DIR
