@@ -1,4 +1,5 @@
 @echo off
+chcp 65001 >nul
 cd /d %~dp0
 REM 优先使用项目自带虚拟环境 venv\Scripts\python.exe（按 README 创建）；
 REM 否则回退到系统 PATH 中的 python。

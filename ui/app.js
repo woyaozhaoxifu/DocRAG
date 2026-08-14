@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 
 let api = null;
 let lastQuery = "";
