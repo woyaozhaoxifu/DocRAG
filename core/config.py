@@ -4,22 +4,20 @@ import json
 APP_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # D:\DocRAG
 
 DEFAULT_CONFIG = {
+    # 要监控/索引的目录。请改成你自己的目录！
+    # 键名任意（仅作显示用），值为绝对路径；子目录会被递归索引。
+    # 下面是常见示例，按需增删，或用 config.json 覆盖（见 config.example.json）。
     "monitored_dirs": {
-        "Downloads": "D:/Downloads",
-        "Documents": "C:/Users/llia/Documents",
         "Desktop": "D:/Desktop",
-        "OneDrive": "C:/Users/llia/OneDrive",
-        "WPSCloud": "C:/Users/llia/WPS Cloud Files",
-        "BaiduPan": "C:/Users/llia/百度网盘",
-        "BaiduDownload": "D:/BaiduNetdiskDownload",
+        "Downloads": "D:/Downloads",
     },
     # 自动归档：仅对开启的目录，且只针对"监听启动后新出现"的文件
     "auto_archive": {
-        "Downloads": False, "Documents": False, "Desktop": False,
-        "OneDrive": False, "WPSCloud": False, "BaiduPan": False, "BaiduDownload": False,
+        "Desktop": False, "Downloads": False,
     },
-    "archive_root": "D:/DocRAG/archive",
-    "data_dir": "D:/DocRAG/data",
+    # 相对本程序目录（APP_DIR），clone 后开箱即用，不依赖任何个人路径
+    "archive_root": "./archive",
+    "data_dir": "./data",
     # 文档类（文本抽取索引）
     "extensions": [
         ".pdf", ".docx", ".doc", ".xlsx", ".xls", ".pptx", ".ppt",

@@ -2,6 +2,10 @@
 data/
 docs.db
 
+# ===== 个人配置（含本机路径/专有名词，不入库）；请用 config.example.json 作模板 =====
+config.json
+user_dict.txt
+
 # ===== 下载的语义模型（约 92MB，不入库） =====
 models/
 

@@ -1,24 +1,19 @@
 {
   "monitored_dirs": {
-    "Downloads": "D:/Downloads",
-    "Documents": "C:/Users/llia/Documents",
     "Desktop": "D:/Desktop",
-    "OneDrive": "C:/Users/llia/OneDrive",
-    "WPSCloud": "C:/Users/llia/WPS Cloud Files",
-    "BaiduPan": "C:/Users/llia/百度网盘",
+    "Downloads": "D:/Downloads",
+    "Documents": "C:/Users/你的用户名/Documents",
+    "OneDrive": "C:/Users/你的用户名/OneDrive",
+    "WPSCloud": "C:/Users/你的用户名/WPS Cloud Files",
+    "BaiduPan": "C:/Users/你的用户名/百度网盘",
     "BaiduDownload": "D:/BaiduNetdiskDownload"
   },
   "auto_archive": {
-    "Downloads": false,
-    "Documents": false,
-    "Desktop": false,
-    "OneDrive": false,
-    "WPSCloud": false,
-    "BaiduPan": false,
-    "BaiduDownload": false
+    "Desktop": false, "Downloads": false, "Documents": false,
+    "OneDrive": false, "WPSCloud": false, "BaiduPan": false, "BaiduDownload": false
   },
-  "archive_root": "D:/DocRAG/archive",
-  "data_dir": "D:/DocRAG/data",
+  "archive_root": "./archive",
+  "data_dir": "./data",
   "extensions": [
     ".pdf", ".docx", ".doc", ".xlsx", ".xls", ".pptx", ".ppt",
     ".txt", ".md", ".csv", ".json", ".html", ".htm", ".rtf"
