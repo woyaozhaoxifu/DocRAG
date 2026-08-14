@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-08-14 A股板块轮动与操作建议</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<style>
+  :root{
+    --red:#d8392b; --green:#1a8a4a; --ink:#1f2733; --sub:#6b7686;
+    --line:#e6e9ef; --bg:#f5f7fa; --card:#ffffff; --accent:#2f5cd8;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.6;}
+  .wrap{max-width:960px;margin:0 auto;padding:24px 18px 60px;}
+  h1{font-size:22px;margin:0 0 4px;}
+  .meta{color:var(--sub);font-size:13px;margin-bottom:18px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:18px 20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(20,30,50,.04);}
+  .tldr{border-left:4px solid var(--accent);background:#eef3ff;}
+  .tldr b{color:var(--accent);}
+  h2{font-size:17px;margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+  table{width:100%;border-collapse:collapse;font-size:14px;}
+  th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);}
+  th{color:var(--sub);font-weight:600;background:#fafbfd;}
+  .up{color:var(--red);font-weight:600;}
+  .dn{color:var(--green);font-weight:600;}
+  .tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:12px;font-weight:600;}
+  .t1{background:#fde9e6;color:#b32d1f;}
+  .t2{background:#fff3d6;color:#9a6b00;}
+  .t3{background:#e9f0ff;color:#2f5cd8;}
+  .no{background:#e8efe9;color:#1a6e38;}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:680px){.grid{grid-template-columns:1fr;}}
+  .box{background:#fafbfd;border:1px solid var(--line);border-radius:10px;padding:14px;}
+  .box h3{margin:0 0 8px;font-size:14px;}
+  .note{color:var(--sub);font-size:12px;margin-top:8px;}
+  .disc{font-size:12px;color:var(--sub);background:#fff8f3;border:1px solid #ffe0c2;
+    border-radius:10px;padding:14px 16px;margin-top:8px;}
+  ul{margin:8px 0 0;padding-left:20px;}
+  li{margin:4px 0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>2026-08-14 A股板块轮动与操作建议</h1>
+  <div class="meta">数据截至 2026-08-14 收盘 ｜ 来源：腾讯自选股/westock-data、Choice、证券时报、每日经济新闻等公开数据交叉核对</div>
+
+  <div class="card tldr">
+    <p style="margin:0;"><b>结论先行：</b>你那张图说的「中军还是硬件」——<b>当天被资金实打实验证了</b>。8/14 全场唯一真主线是 <b>AI算力硬件</b>（CPO/光模块+通信设备+PCB+算力租赁），资金净流入居前；而电力抱团瓦解（当日净流出行业第一）、芯片链整体仍是反弹非趋势流入、军工/智能驾驶多为脉冲。市场是「指数收红、2900股下跌」的极致二八分化，<b>不宜满仓追高，建议 50%-60% 仓位、沿主线低吸分歧</b>。</p>
+  </div>
+
+  <div class="card">
+    <h2>一、大盘状态：指数温柔护盘，个股惨烈分化</h2>
+    <table>
+      <tr><th>指数</th><th>收盘</th><th>当日</th><th>年初至今</th></tr>
+      <tr><td>上证指数 000001.SH</td><td>3,927.18</td><td class="up">+0.01%</td><td>-1.05%</td></tr>
+      <tr><td>深证成指 399001.SZ</td><td>14,354.31</td><td class="up">+0.45%</td><td>+6.13%</td></tr>
+      <tr><td>创业板指 399006.SZ</td><td>3,626.30</td><td class="up">+1.12%</td><td>+13.21%</td></tr>
+      <tr><td>北证50</td><td>—</td><td class="dn">-0.94%</td><td>—</td></tr>
+    </table>
+    <p class="note">成交 2.14–2.16 万亿元，较前一交易日<b>缩量约 4000 亿</b>；全市场上涨约 2400 只、下跌超 2970 只（涨跌比约 2400:2970）；64 涨停 / 10 跌停。主力资金全市场净流出 42.46 亿，属存量博弈下的结构性抽血。沪指守住 3900 点、午后 V 型翻红，但量能萎缩显示多空分歧加剧。</p>
+  </div>
+
+  <div class="card">
+    <h2>二、板块资金流向（当日主力净流入，亿元）</h2>
+    <div id="flow" style="width:100%;height:380px;"></div>
+    <p class="note">红=净流入（资金买入），绿=净流出。口径：行业/概念主力净流入（westock-data 与 Choice 交叉核对，略有口径差异）。CPO/光模块当日约 +111~116 亿、通信设备 +118.7 亿（行业净流第一）、算力租赁 +51.5 亿、PCB +22.4 亿；电力 -46.9 亿（行业净流出第一）、半导体 -54.8 亿（5日 -300 亿）。</p>
+  </div>
+
+  <div class="card">
+    <h2>三、主线持续性判断</h2>
+    <table>
+      <tr><th>方向</th><th>当日资金</th><th>周度资金</th><th>判断</th></tr>
+      <tr><td>通信（光模块/CPO）</td><td class="up">+118亿</td><td class="up">+156亿</td><td>真主线，催化连续（中际旭创入股中石科技、全球云开支+90%），持续性强</td></tr>
+      <tr><td>电子（硬件）</td><td>—</td><td class="dn">-202亿</td><td>高位兑现，内部「卖软买硬」、分环节撤退</td></tr>
+      <tr><td>医药生物</td><td>—</td><td class="up">+323亿</td><td>周度最强，但 CRO 单日分歧（药明康德净流出 4.3亿）</td></tr>
+      <tr><td>有色金属</td><td class="up">+7亿</td><td class="dn">-94亿</td><td>涨价逻辑在，中期资金撤退，高位震荡</td></tr>
+      <tr><td>半导体/芯片</td><td class="dn">-55亿</td><td class="dn">-300亿(5日)</td><td>超跌反弹，非趋势流入；仅设备/材料/存储有业绩兑现</td></tr>
+      <tr><td>电力</td><td class="dn">-47亿</td><td>—</td><td>抱团瓦解、趋势转弱，回避</td></tr>
+      <tr><td>军工</td><td class="up">+27亿</td><td class="dn">-118亿(5日)</td><td>单日反弹，中期流出，催化多但资金未转强</td></tr>
+      <tr><td>智能驾驶</td><td class="dn">-16亿</td><td class="dn">-27亿(5日)</td><td>英伟达催化脉冲，权重德赛西威 -5.6%，趋势未立</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>四、板块优先级排序（短期）</h2>
+    <div class="grid">
+      <div class="box"><h3><span class="tag t1">T1 主攻</span> AI算力硬件</h3>
+        <p style="font-size:13px;margin:6px 0;">CPO/光模块（新易盛、天孚通信、中际旭创）、通信设备、PCB/CCL（华正新材、中富电路）、液冷服务器、算力租赁（网宿科技、数据港、利通电子）。优选<b>业绩已兑现</b>的环节，紧跟产业催化。</p></div>
+      <div class="box"><h3><span class="tag t2">T2 等企稳</span> 半导体设备/材料/存储</h3>
+        <p style="font-size:13px;margin:6px 0;">芯片链中唯一「有业绩」的环节（中芯国际Q2净利近4倍、海光H1+66%）。整体资金仍净流出，<b>不追高，等主力由净流出转净流入再介入</b>。</p></div>
+      <div class="box"><h3><span class="tag t3">T3 低吸</span> 有色金属（涨价）</h3>
+        <p style="font-size:13px;margin:6px 0;">金/铜/铝/稀土/钨涨价逻辑仍在，但资金中期流出。<b>逢回调低吸战略金属（稀土、钨），不追当日涨停题材股</b>。</p></div>
+      <div class="box"><h3><span class="tag no">回避</span> 电力 / 高位消费</h3>
+        <p style="font-size:13px;margin:6px 0;">电力抱团瓦解、资金持续流出；白酒承压（皇台、舍得跌超3%）。军工/智能驾驶有催化但资金面未转强，<b>只做分歧低吸、不追一致高开</b>。</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>五、操作计划（条件 + 动作）</h2>
+    <ul>
+      <li><b>仓位：</b>缩量、二八分化下建议 <b>50%–60%</b>，不满仓追高；环境不支持时降到 40% 以下。</li>
+      <li><b>主攻方向：</b>T1 硬件主线，优先业绩兑现的 CPO/PCB 龙头；回踩 5 日线缩量可试错仓 10–20%。</li>
+      <li><b>分仓路径：</b>试错仓 10–20% → 确认仓 +20–30%（走势符合预期）→ 突破加仓 +20–30%；极强势+环境支持才上 70%。</li>
+      <li><b>止盈：</b>目标止盈看前高/阻力位；情绪止盈看换手＞15% 且放量滞涨。</li>
+      <li><b>止损：</b>技术止损跌破前低/5日线/关键支撑，或幅度止损 -5% 至 -8%，或时间止损（X 天不涨）。</li>
+      <li><b>失效条件：</b>①催化证伪 ②板块转弱/龙头负反馈 ③放量破位 ④次日反馈差。任一触发即减仓，避免死扛。</li>
+      <li><b>风险窗口：</b>8月中下旬中报密集披露，纯概念、无营收兑现标的明显承压；警惕电力、有色高低切兑现与缩量下的持续性不足。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>六、反向声音（别只顺着图点头）</h2>
+    <ul>
+      <li>「硬件全面复辟」是事实，但<b>半导体当日净流出 55 亿、5日 -300 亿</b>——把「芯片产业链」整体当主线是误读，它只是超跌反弹。</li>
+      <li>服务器指数涨但资金流出（量价背离），是高位兑现信号，不是加仓信号。</li>
+      <li>军工、智能驾驶的上涨由「十五五」/英伟达催化带动，但<b>资金面 5日仍净流出</b>，属轮动脉冲，持续性待验证。</li>
+      <li>全市场缩量 4000 亿、2900 股下跌，是<b>存量抽血</b>而非增量进场；追高一致板块性价比低，低吸分歧才是当下更优解。</li>
+    </ul>
+  </div>
+
+  <div class="disc">
+    ⚠️ <b>风险提示与免责声明：</b>以上为基于公开数据的市场分析，不构成任何投资建议、理财建议或交易邀约。市场有风险，投资需谨慎。文中涉及标的、价位、策略均仅供研究参考，不保证准确性或完整性，不代表任何投资结果承诺。投资者应根据自身风险承受能力、投资目标和财务状况独立决策并自担风险。过往业绩不预示未来表现。数据来源：腾讯自选股/westock-data、Choice、证券时报、每日经济新闻等公开媒体（截至 2026-08-14 收盘），研报观点来自公开整理，需核实原文。
+  </div>
+</div>
+
+<script>
+echarts.init(document.getElementById('flow')).setOption({
+  tooltip:{trigger:'axis',axisPointer:{type:'shadow'},
+    formatter:function(p){var s=p[0].name+': ';var v=p[0].value;
+      return s+(v>=0?'+':'')+v+' 亿';}},
+  grid:{left:90,right:30,top:20,bottom:40},
+  xAxis:{type:'value',name:'亿元'},
+  yAxis:{type:'category',data:['半导体','电力','食品饮料','有色金属','军工','PCB','算力租赁','通信设备','CPO/光模块']},
+  series:[{
+    type:'bar',
+    data:[
+      {value:-54.8,itemStyle:{color:'#1a8a4a'}},
+      {value:-46.9,itemStyle:{color:'#1a8a4a'}},
+      {value:8.4,itemStyle:{color:'#d8392b'}},
+      {value:7.2,itemStyle:{color:'#d8392b'}},
+      {value:26.7,itemStyle:{color:'#d8392b'}},
+      {value:22.4,itemStyle:{color:'#d8392b'}},
+      {value:51.5,itemStyle:{color:'#d8392b'}},
+      {value:118.7,itemStyle:{color:'#d8392b'}},
+      {value:113.0,itemStyle:{color:'#d8392b'}}
+    ],
+    label:{show:true,position:'right',formatter:function(d){return (d.value>=0?'+':'')+d.value;}}
+  }]
+});
+</script>
+</body>
+</html>
