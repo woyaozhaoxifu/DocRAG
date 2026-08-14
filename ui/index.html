@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>本地文档智能检索</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">📚</span>
+      <span class="title">本地文档智能检索</span>
+    </div>
+    <div class="search-wrap">
+      <input id="search" type="text" placeholder="输入关键词 / 文件名，支持同义词（电池=新能源）…" autocomplete="off" />
+      <div id="suggest" class="suggest"></div>
+      <button id="clear" class="clear-btn" title="清空">✕</button>
+    </div>
+    <div class="stats" id="stats">
+      <span class="chip">已索引 <b id="stat-total">0</b></span>
+      <span class="chip">已归档 <b id="stat-archived">0</b></span>
+      <span class="chip" id="stat-semantic" title="语义向量检索状态">语义 <b id="stat-sem">关</b></span>
+    </div>
+  </header>
+
+  <div class="filters">
+    <div class="filter-group" id="filter-type">
+      <span class="filter-label">类型</span>
+      <button class="fchip active" data-exts="">全部</button>
+      <button class="fchip" data-exts=".pdf">PDF</button>
+      <button class="fchip" data-exts=".doc,.docx">Word</button>
+      <button class="fchip" data-exts=".xls,.xlsx">Excel</button>
+      <button class="fchip" data-exts=".ppt,.pptx">PPT</button>
+      <button class="fchip" data-exts=".txt,.md,.csv,.json,.html">文本</button>
+      <button class="fchip" data-exts=".png,.jpg,.jpeg,.bmp">图片</button>
+    </div>
+    <div class="filter-group" id="filter-dir">
+      <span class="filter-label">目录</span>
+      <button class="fchip active" data-dir="">全部</button>
+      <button class="fchip" data-dir="Downloads">下载</button>
+      <button class="fchip" data-dir="Documents">文档</button>
+      <button class="fchip" data-dir="Desktop">桌面</button>
+      <button class="fchip" data-dir="OneDrive">OneDrive</button>
+    </div>
+  </div>
+
+  <main>
+    <div id="status" class="status">正在初始化索引…</div>
+    <div id="results" class="results"></div>
+  </main>
+
+  <footer class="bottombar">
+    <button id="reindex" class="ghost-btn">重新扫描</button>
+    <button id="smart" class="ghost-btn">智能归档</button>
+    <span class="hint">回车搜索 · 点「打开」用默认程序打开 · 点标题预览正文 · 归档后可一键还原</span>
+  </footer>
+
+  <div id="preview" class="modal hidden">
+    <div class="modal-box">
+      <div class="modal-head">
+        <span id="preview-title"></span>
+        <button id="preview-close" class="clear-btn">✕</button>
+      </div>
+      <pre id="preview-body" class="modal-body"></pre>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+{
+  "monitored_dirs": {
+    "Downloads": "D:/Downloads",
+    "Documents": "C:/Users/llia/Documents",
+    "Desktop": "D:/Desktop",
+    "OneDrive": "C:/Users/llia/OneDrive",
+    "WPSCloud": "C:/Users/llia/WPS Cloud Files",
+    "BaiduPan": "C:/Users/llia/百度网盘",
+    "BaiduDownload": "D:/BaiduNetdiskDownload"
+  },
+  "auto_archive": {
+    "Downloads": false,
+    "Documents": false,
+    "Desktop": false,
+    "OneDrive": false,
+    "WPSCloud": false,
+    "BaiduPan": false,
+    "BaiduDownload": false
+  },
+  "archive_root": "D:/DocRAG/archive",
+  "data_dir": "D:/DocRAG/data",
+  "extensions": [
+    ".pdf", ".docx", ".doc", ".xlsx", ".xls", ".pptx", ".ppt",
+    ".txt", ".md", ".csv", ".json", ".html", ".htm", ".rtf"
+  ],
+  "image_exts": [".png", ".jpg", ".jpeg", ".bmp", ".gif"],
+  "max_text_chars": 200000,
+  "settle_seconds": 3,
+  "exclude_dirs": [
+    "WeChat Files", "Tencent Files", "QQ", "node_modules",
+    ".431317168", ".cache", "__pycache__", ".git",
+    "Codex", "LCEDA", "Rockstar",
+    "英雄联盟", "wps", "BaiduNetdisk", "百度网盘", "WPS Cloud Files"
+  ],
+  "exclude_path_contains": [
+    "Tencent Files", "WeChat Files", "Codex", "LCEDA", "Rockstar",
+    "英雄联盟", "BaiduNetdisk", "百度网盘", "WPS Cloud Files", ".431317168"
+  ],
+  "exclude_exts": [".tmp", ".crdownload", ".lnk", ".part", ".download", ".msi", ".mts"],
+  "user_dict": "user_dict.txt",
+  "synonyms": {
+    "电池": ["新能源", "动力", "储能", "锂电"],
+    "报销": ["差旅", "差旅费", "费用", "发票"],
+    "电源": ["电源适配器", "供电", "充电", "电源兼容"],
+    "实习": ["实习报告", "实习日志", "见习"],
+    "测试": ["测试报告", "测试规范", "验证"]
+  },
+  "vector": {
+    "enabled": true,
+    "model": "BAAI/bge-small-zh-v1.5",
+    "top_k": 25,
+    "weight": 0.4
+  },
+  "ocr": { "enabled": true },
+  "smart_archive": { "enabled": false, "days_unused": 30, "dirs": ["Downloads"] }
+}
