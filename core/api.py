@@ -11,11 +11,16 @@ class Api:
         self.mgr = mgr
 
     # ---- 检索 ----
-    def search(self, q, limit=30, filters=None):
+    def search(self, q, limit=30, exts=None, dir_name=None):
         q = (q or "").strip()
         if not q:
             return []
-        return self.mgr.store.search(q, int(limit or 30), filters=filters)
+        filters = {}
+        if exts:
+            filters["exts"] = exts
+        if dir_name:
+            filters["dir"] = dir_name
+        return self.mgr.store.search(q, int(limit or 30), filters=filters or None)
 
     def suggest(self, q, limit=8):
         return self.mgr.store.suggest(q, int(limit or 8))
@@ -26,8 +31,13 @@ class Api:
     def get_stats(self):
         return self.mgr.store.stats()
 
-    def list_recent(self, n=20, filters=None):
-        return self.mgr.store.recent(int(n or 20), filters=filters)
+    def list_recent(self, n=20, exts=None, dir_name=None):
+        filters = {}
+        if exts:
+            filters["exts"] = exts
+        if dir_name:
+            filters["dir"] = dir_name
+        return self.mgr.store.recent(int(n or 20), filters=filters or None)
 
     # ---- 文件操作 ----
     def open_file(self, path):

@@ -173,7 +173,7 @@ function refresh() {
     // 未搜索（浏览）状态下也要应用"类型/目录"筛选
     const hasFilter = (!!currentFilter.exts && currentFilter.exts.length) || !!currentFilter.dir;
     const lim = hasFilter ? 500 : 20;
-    api.list_recent(lim, currentFilter).then((list) => { lastResults = list; renderResults(list); });
+    api.list_recent(lim, currentFilter.exts, currentFilter.dir).then((list) => { lastResults = list; renderResults(list); });
   }
   api.get_stats().then(renderStats);
 }
@@ -182,7 +182,7 @@ function doSearch(q) {
   lastQuery = q;
   if (!q.trim()) { refresh(); return; }
   $("status").textContent = "搜索中…";
-  api.search(q, 30, currentFilter).then((list) => {
+  api.search(q, 30, currentFilter.exts, currentFilter.dir).then((list) => {
     lastResults = list;
     renderResults(list);
     $("status").textContent = `找到 ${list.length} 个结果`;
