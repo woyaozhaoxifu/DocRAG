@@ -1,4 +1,5 @@
 import os
+import subprocess
 import time
 
 from .store import _is_placeholder
@@ -50,6 +51,24 @@ class Api:
             }
         try:
             os.startfile(path)
+            return {"ok": True}
+        except Exception as e:
+            return {"ok": False, "error": str(e)}
+
+    def reveal_in_explorer(self, path):
+        """在文件资源管理器中定位并选中该文件（explorer /select）。"""
+        if not path:
+            return {"ok": False, "error": "路径为空"}
+        if not os.path.exists(path):
+            return {"ok": False, "error": "文件不存在或已移动（可能已被删除/归档）"}
+        if _is_placeholder(path):
+            return {
+                "ok": False,
+                "error": "该文件为云盘占位符，请先在网盘客户端将其「释放/始终保留在此设备」后再定位",
+            }
+        try:
+            # explorer /select,"路径" 会打开所在文件夹并高亮选中该文件
+            subprocess.Popen(["explorer", f"/select,{path}"])
             return {"ok": True}
         except Exception as e:
             return {"ok": False, "error": str(e)}

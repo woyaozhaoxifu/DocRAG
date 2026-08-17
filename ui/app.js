@@ -105,6 +105,12 @@ function resultCard(item) {
   prevBtn.onclick = () => showPreview(item.path);
   actions.appendChild(prevBtn);
 
+  const locBtn = document.createElement("button");
+  locBtn.className = "btn";
+  locBtn.textContent = "位置";
+  locBtn.onclick = () => showLocation(item.path);
+  actions.appendChild(locBtn);
+
   if (item.archived) {
     const restoreBtn = document.createElement("button");
     restoreBtn.className = "btn";
@@ -165,6 +171,49 @@ function showPreview(path) {
   });
 }
 function closePreview() { $("preview").classList.add("hidden"); }
+
+// ---- 查看文件存放位置 ----
+let locatePath = "";
+function showLocation(path) {
+  locatePath = path;
+  const item = lastResults.find((x) => x.path === path);
+  $("locate-title").textContent = (item && item.filename) ? item.filename : path.split(/[\\/]/).pop();
+  $("locate-sub").textContent = (item && item.dir_name ? "分类：" + item.dir_name + "  ·  " : "") + "文件存放位置";
+  $("locate-path").textContent = path;
+  $("locate-msg").textContent = "";
+  $("locate").classList.remove("hidden");
+}
+function closeLocate() { $("locate").classList.add("hidden"); }
+function copyPath() {
+  const text = locatePath || "";
+  if (!text) return;
+  const okMsg = () => { $("locate-msg").textContent = "已复制路径到剪贴板"; };
+  const fallback = () => {
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      const ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      $("locate-msg").textContent = ok ? "已复制路径到剪贴板" : "复制失败，请手动选择文本复制";
+    } catch (e) {
+      $("locate-msg").textContent = "复制失败，请手动选择文本复制";
+    }
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(okMsg, fallback);
+  } else { fallback(); }
+}
+function revealFile() {
+  if (!locatePath) return;
+  api.reveal_in_explorer(locatePath).then((r) => {
+    if (!r || !r.ok) {
+      $("locate-msg").textContent = "无法打开文件夹：" + ((r && r.error) || "未知错误");
+    } else {
+      $("locate-msg").textContent = "已在资源管理器中定位该文件";
+    }
+  });
+}
 
 function refresh() {
   if (lastQuery.trim()) {
@@ -240,6 +289,10 @@ function init() {
   };
   $("preview-close").onclick = closePreview;
   $("preview").onclick = (e) => { if (e.target.id === "preview") closePreview(); };
+  $("locate-close").onclick = closeLocate;
+  $("locate").onclick = (e) => { if (e.target.id === "locate") closeLocate(); };
+  $("locate-copy").onclick = copyPath;
+  $("locate-open").onclick = revealFile;
 
   document.querySelectorAll("#filter-type .fchip").forEach((btn) => {
     btn.onclick = () => {

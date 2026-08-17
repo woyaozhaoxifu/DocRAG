@@ -267,3 +267,23 @@ main {
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-thumb { background: #2c3340; border-radius: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
+
+/* 存放位置弹窗 */
+.locate-body { display: flex; flex-direction: column; }
+.locate-sub { color: var(--muted); font-size: 12px; margin-bottom: 10px; }
+.locate-path {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-family: "Consolas", "Microsoft YaHei", monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text);
+  word-break: break-all;
+  white-space: pre-wrap;
+  user-select: text;
+  cursor: text;
+}
+.locate-actions { display: flex; gap: 8px; margin-top: 14px; }
+.locate-msg { color: var(--green); font-size: 12px; margin-top: 10px; min-height: 14px; }
